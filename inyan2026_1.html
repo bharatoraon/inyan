@@ -1,0 +1,4034 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INYAN 2026 — The 65th Square: Beyond the Know</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ─── BRAND TOKENS ─── */
+    :root {
+      --ink: #13101A;
+      --ink2: #1E1828;
+      --plum: #3D2C3E;
+      --purple: #7B40E0;
+      --mauve: #8B4A6A;
+      --coral: #F75C6E;
+      --lime: #B5E327;
+      --white: #F5F2EC;
+      --grey: #7A7580;
+
+      --ff-display: 'Bebas Neue', sans-serif;
+      --ff-mono: 'Space Mono', monospace;
+      --ff-body: 'DM Sans', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--white);
+      font-family: var(--ff-body);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+    .cursor {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      width: 14px;
+      height: 14px;
+      background: var(--lime);
+      border-radius: 2px;
+      transform: translate(-50%, -50%) rotate(45deg);
+      transition: transform .15s, width .15s, height .15s, background .15s;
+      mix-blend-mode: difference;
+    }
+
+    body:has(a:hover) .cursor,
+    body:has(button:hover) .cursor {
+      transform: translate(-50%, -50%) rotate(45deg) scale(2.2);
+      background: var(--coral);
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      mix-blend-mode: normal;
+    }
+
+    nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(19, 16, 26, .95), transparent);
+      pointer-events: none;
+    }
+
+    .nav-logo {
+      font-family: var(--ff-display);
+      font-size: 1.6rem;
+      letter-spacing: .06em;
+      color: var(--white);
+      text-decoration: none;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+    }
+
+    .nav-logo span {
+      color: var(--lime);
+    }
+
+    /* INYAN × SPAV collab badge */
+    .collab-sep {
+      font-family: var(--ff-mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--lime);
+      letter-spacing: 0;
+      opacity: .7;
+      flex-shrink: 0;
+    }
+
+    .spav-logo-img {
+      display: block;
+      width: auto;
+      transition: opacity .2s;
+    }
+
+    .nav-logo:hover .spav-logo-img {
+      opacity: .85;
+    }
+
+    /* Footer collab lockup */
+    .footer-collab {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: .75rem;
+    }
+
+    .footer-collab-sep {
+      font-family: var(--ff-mono);
+      font-size: 1.45rem;
+      color: var(--lime);
+      opacity: .5;
+      flex-shrink: 0;
+    }
+
+    .footer-spav-img {
+      display: block;
+      width: auto;
+      transition: opacity .2s;
+    }
+
+    .footer-spav-img:hover {
+      opacity: .85;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      position: relative;
+    }
+
+    .nav-links a {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      color: rgba(245, 242, 236, .5);
+      text-decoration: none;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--lime);
+    }
+
+    .nav-reg {
+      position: relative;
+      background: var(--lime);
+      color: var(--ink);
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .55rem 1.25rem;
+      border: none;
+      cursor: none;
+      text-decoration: none;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background .2s, color .2s;
+    }
+
+    .nav-reg:hover {
+      background: var(--coral);
+      color: var(--white);
+    }
+
+    /* ─── HAMBURGER BUTTON ─── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: none;
+      padding: 4px;
+      position: relative;
+      z-index: 102;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform .35s cubic-bezier(.77,0,.175,1), opacity .2s;
+      transform-origin: center;
+    }
+
+    /* X state */
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── MOBILE MENU OVERLAY ─── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 101;
+      background: var(--ink);
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 2.5rem 3rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu-inner {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+    }
+
+    .mobile-link {
+      font-family: var(--ff-display);
+      font-size: clamp(3rem, 16vw, 5.5rem);
+      letter-spacing: .04em;
+      color: rgba(245,242,236,.15);
+      text-decoration: none;
+      line-height: 1;
+      padding: .35rem 0;
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      transition: color .25s;
+      position: relative;
+    }
+
+    .mobile-link::before {
+      content: attr(data-num);
+      font-family: var(--ff-mono);
+      font-size: .6rem;
+      letter-spacing: .16em;
+      color: var(--grey);
+      padding-bottom: .35rem;
+    }
+
+    .mobile-link:hover { color: var(--white); }
+
+    .mobile-link-cta {
+      color: var(--lime) !important;
+      margin-top: .5rem;
+      border-bottom: none;
+    }
+
+    .mobile-link-cta:hover { color: var(--coral) !important; }
+
+    .mobile-menu-footer {
+      position: absolute;
+      bottom: 2rem;
+      left: 2.5rem;
+      font-family: var(--ff-mono);
+      font-size: .6rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    /* ─── SECTION UTILITIES ─── */
+    section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    .section-tag {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: .75rem;
+      display: block;
+    }
+
+    /* ─── WAVY DIVIDER SVG ─── */
+    .wave-divider {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .wave-divider svg {
+      display: block;
+      width: 100%;
+    }
+
+    /* ══════════════════════════════════════
+     01 HERO
+  ══════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 5rem;
+      background: var(--ink);
+    }
+
+    /* Animated grid background */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: block;
+      pointer-events: none;
+    }
+
+
+
+
+    /* Coral accent shape */
+    .hero-coral-blob {
+      position: absolute;
+      z-index: 0;
+      width: 320px;
+      height: 320px;
+      background: var(--coral);
+      opacity: .08;
+      filter: blur(80px);
+      top: 20%;
+      left: 5%;
+      border-radius: 50%;
+      animation: blobPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes blobPulse {
+      to {
+        transform: scale(1.3) translate(20px, 20px);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 2px;
+      background: var(--coral);
+    }
+
+    /* INYAN logo – electric glitch on hover */
+    .hero-logo-wrap {
+      margin-bottom: 2.5rem;
+      position: relative;
+      display: inline-block;
+      cursor: none;
+    }
+
+    .hero-logo-wrap img {
+      display: block;
+      height: clamp(115px, 20vw, 235px);
+      width: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Chromatic aberration ghost layers */
+    .hero-logo-wrap::before,
+    .hero-logo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('Logo.png') no-repeat center / contain;
+      opacity: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      transition: opacity 0s;
+    }
+
+    .hero-logo-wrap::before {
+      filter: hue-rotate(180deg) saturate(1.5);
+    }
+
+    /* cyan channel */
+    .hero-logo-wrap::after {
+      filter: hue-rotate(300deg) saturate(1.5);
+    }
+
+    /* magenta channel */
+
+    /* Glitch shake keyframes — subtle */
+    @keyframes glitch-main {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+        filter: brightness(1);
+      }
+
+      10% {
+        transform: translate(-2px, 0);
+        filter: brightness(1.2) drop-shadow(0 0 4px #B5E327);
+      }
+
+      20% {
+        transform: translate(2px, 0);
+        filter: brightness(0.95);
+      }
+
+      30% {
+        transform: translate(0, 0);
+        filter: brightness(1);
+      }
+
+      55% {
+        transform: translate(-1px, 1px);
+        filter: brightness(1.15) drop-shadow(0 0 6px #F75C6E);
+      }
+
+      65% {
+        transform: translate(1px, -1px);
+        filter: brightness(0.97);
+      }
+
+      75% {
+        transform: translate(0, 0);
+        filter: brightness(1);
+      }
+
+      88% {
+        transform: translate(-2px, 0);
+        filter: brightness(1.25) drop-shadow(0 0 5px #B5E327);
+      }
+
+      94% {
+        transform: translate(1px, 0);
+        filter: brightness(0.95);
+      }
+    }
+
+    @keyframes glitch-before {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      10% {
+        transform: translate(-3px, 0);
+        opacity: 0.18;
+      }
+
+      20% {
+        transform: translate(2px, 0);
+        opacity: 0.12;
+      }
+
+      30% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      55% {
+        transform: translate(-2px, 1px);
+        opacity: 0.16;
+      }
+
+      65% {
+        transform: translate(3px, 0);
+        opacity: 0.10;
+      }
+
+      75% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      88% {
+        transform: translate(-3px, 0);
+        opacity: 0.2;
+      }
+
+      94% {
+        transform: translate(2px, 0);
+        opacity: 0.08;
+      }
+    }
+
+    @keyframes glitch-after {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      10% {
+        transform: translate(3px, 0);
+        opacity: 0.16;
+      }
+
+      20% {
+        transform: translate(-2px, 0);
+        opacity: 0.10;
+      }
+
+      30% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      55% {
+        transform: translate(2px, -1px);
+        opacity: 0.14;
+      }
+
+      65% {
+        transform: translate(-3px, 0);
+        opacity: 0.10;
+      }
+
+      75% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      88% {
+        transform: translate(3px, 0);
+        opacity: 0.18;
+      }
+
+      94% {
+        transform: translate(-1px, 0);
+        opacity: 0.07;
+      }
+    }
+
+    /* Activate on hover */
+    .hero-logo-wrap:hover img {
+      animation: glitch-main 1s steps(1) infinite;
+    }
+
+    .hero-logo-wrap:hover::before {
+      animation: glitch-before 1s steps(1) infinite;
+    }
+
+    .hero-logo-wrap:hover::after {
+      animation: glitch-after 1s steps(1) infinite;
+    }
+
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    /* Countdown */
+    .countdown {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .cd-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .2rem;
+    }
+
+    .cd-num {
+      font-family: var(--ff-display);
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      color: var(--white);
+      line-height: 1;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(181, 227, 39, .2);
+      padding: .3rem .8rem;
+      min-width: clamp(70px, 8vw, 120px);
+      text-align: center;
+    }
+
+    .cd-label {
+      font-family: var(--ff-mono);
+      font-size: .6rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    /* ─── LIVE STATE ─── */
+    .cd-live {
+      display: none;
+      flex-direction: column;
+      gap: .5rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .cd-live.visible {
+      display: flex;
+    }
+
+    .cd-live.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .cd-live-title {
+      font-family: var(--ff-display);
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: .04em;
+      color: var(--lime);
+      animation: livePulse 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes livePulse {
+      from {
+        text-shadow: 0 0 16px rgba(181, 227, 39, .3);
+      }
+
+      to {
+        text-shadow: 0 0 40px rgba(181, 227, 39, .75), 0 0 80px rgba(181, 227, 39, .25);
+      }
+    }
+
+    /* Live dot */
+    .cd-live-title::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--coral);
+      border-radius: 50%;
+      margin-right: .6rem;
+      animation: liveDot 1.2s ease-in-out infinite alternate;
+      vertical-align: middle;
+      margin-bottom: 4px;
+    }
+
+    @keyframes liveDot {
+      from {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(247, 92, 110, .6);
+      }
+
+      to {
+        opacity: .6;
+        box-shadow: 0 0 0 6px rgba(247, 92, 110, 0);
+      }
+    }
+
+    .cd-live-sub {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, .45);
+    }
+
+    .cd-sep {
+      font-family: var(--ff-display);
+      font-size: 3rem;
+      color: var(--lime);
+      line-height: 1;
+      margin-top: .3rem;
+    }
+
+    .hero-cta-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: .75rem;
+    }
+
+    .hero-date {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      color: var(--grey);
+      text-align: right;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--lime);
+      color: var(--ink);
+      font-family: var(--ff-mono);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 1rem 2.2rem;
+      text-decoration: none;
+      cursor: none;
+      border: none;
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      transition: background .2s, color .2s, transform .15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--coral);
+      transform: translateX(-101%);
+      transition: transform .3s ease;
+    }
+
+    .btn-primary:hover::after {
+      transform: translateX(0);
+    }
+
+    .btn-primary:hover {
+      color: var(--white);
+    }
+
+    .btn-primary span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-arrow {
+      position: relative;
+      z-index: 1;
+      font-size: 1.1rem;
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      font-family: var(--ff-mono);
+      font-size: .6rem;
+      letter-spacing: .12em;
+      color: var(--grey);
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--grey), transparent);
+      animation: scrollLine 1.6s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scaleY(1)
+      }
+
+      50% {
+        opacity: .4;
+        transform: scaleY(.5)
+      }
+    }
+
+    /* ══════════════════════════════════════
+     02 FEATURED EVENTS
+  ══════════════════════════════════════ */
+    #events {
+      background: var(--plum);
+      padding: 6rem 0 5rem;
+    }
+
+    .events-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: clamp(3rem, 7vw, 7rem);
+      line-height: .9;
+      letter-spacing: .02em;
+      color: var(--white);
+    }
+
+    /* Filter pills */
+    .filter-pills {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .4rem 1rem;
+      border: 1px solid rgba(245, 242, 236, .2);
+      background: transparent;
+      color: rgba(245, 242, 236, .5);
+      cursor: none;
+      transition: all .2s;
+    }
+
+    .pill.active,
+    .pill:hover {
+      background: var(--lime);
+      color: var(--ink);
+      border-color: var(--lime);
+    }
+
+    /* Event cards */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .event-card {
+      background: var(--ink2);
+      padding: 1.75rem;
+      border: 1px solid rgba(255, 255, 255, .06);
+      position: relative;
+      overflow: hidden;
+      transition: background .25s, transform .25s;
+      cursor: none;
+    }
+
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+    }
+
+    .event-card:hover {
+      background: rgba(255, 255, 255, .04);
+      transform: translateY(-4px);
+    }
+
+    .event-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card-cultural::before {
+      background: var(--coral);
+    }
+
+    .card-technical::before {
+      background: var(--purple);
+    }
+
+    .card-workshop::before {
+      background: var(--lime);
+    }
+
+    .card-game::before {
+      background: var(--mauve);
+    }
+
+    .card-cultural .ev-cat {
+      color: var(--coral);
+    }
+
+    .card-technical .ev-cat {
+      color: var(--purple);
+    }
+
+    .card-workshop .ev-cat {
+      color: var(--lime);
+    }
+
+    .card-game .ev-cat {
+      color: var(--mauve);
+    }
+
+    .ev-cat {
+      font-family: var(--ff-mono);
+      font-size: .62rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+      display: block;
+    }
+
+    .ev-name {
+      font-family: var(--ff-display);
+      font-size: 1.6rem;
+      letter-spacing: .02em;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: .75rem;
+    }
+
+    .ev-meta {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      color: var(--grey);
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+    }
+
+    .ev-meta span {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    .ev-icon {
+      font-size: .8rem;
+    }
+
+    .ev-num {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      font-family: var(--ff-display);
+      font-size: 3.5rem;
+      color: rgba(255, 255, 255, .04);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════
+     03 PERFORMANCES / GUESTS
+  ══════════════════════════════════════ */
+    #performances {
+      background: var(--ink);
+      padding: 6rem 0;
+    }
+
+    .perf-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .perf-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .perf-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--ink2);
+      padding: 2.5rem;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: none;
+      transition: transform .3s;
+    }
+
+    .perf-card:hover {
+      transform: scale(1.01);
+    }
+
+    .perf-card-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: .18;
+      transition: opacity .4s, transform .4s;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .perf-card-bg img {
+      width: 82%;
+      height: 88%;
+      object-fit: contain;
+      object-position: bottom right;
+      transform: translateX(6%) translateY(4%);
+      transition: transform .4s cubic-bezier(.25, .8, .25, 1);
+      display: block;
+    }
+
+    .perf-card:hover .perf-card-bg {
+      opacity: .28;
+    }
+
+    .perf-card:hover .perf-card-bg img {
+      transform: translateX(2%) translateY(0%) scale(1.04);
+    }
+
+    .perf-card-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .perf-label {
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+      display: block;
+    }
+
+    .perf-name {
+      font-family: var(--ff-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: .95;
+      letter-spacing: .02em;
+      color: var(--white);
+      margin-bottom: .6rem;
+    }
+
+    .perf-desc {
+      font-family: var(--ff-body);
+      font-size: .85rem;
+      color: rgba(245, 242, 236, .5);
+      line-height: 1.5;
+      max-width: 380px;
+    }
+
+    .perf-cultural {
+      border-left: 3px solid var(--coral);
+    }
+
+    .perf-cultural .perf-label {
+      color: var(--coral);
+    }
+
+    .perf-cultural .perf-card-bg {
+      color: var(--coral);
+    }
+
+    .perf-club {
+      border-left: 3px solid var(--purple);
+    }
+
+    .perf-club .perf-label {
+      color: var(--purple);
+    }
+
+    .perf-club .perf-card-bg {
+      color: var(--purple);
+    }
+
+    .perf-music {
+      border-left: 3px solid var(--lime);
+    }
+
+    .perf-music .perf-label {
+      color: var(--lime);
+    }
+
+    .perf-music .perf-card-bg {
+      color: var(--lime);
+    }
+
+    .perf-mystery {
+      border-left: 3px solid var(--mauve);
+    }
+
+    .perf-mystery .perf-label {
+      color: var(--mauve);
+    }
+
+    .perf-mystery .perf-card-bg {
+      color: var(--mauve);
+    }
+
+    /* ══════════════════════════════════════
+     04 AFTERMOVIE
+  ══════════════════════════════════════ */
+    #aftermovie {
+      background: #000;
+      padding: 0;
+      position: relative;
+    }
+
+    .aftermovie-inner {
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Placeholder (replace src with actual YouTube embed) */
+    .after-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #13101A 0%, #1E0A2E 50%, #13101A 100%);
+    }
+
+    .after-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(247, 92, 110, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247, 92, 110, .08) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .after-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .after-eyebrow {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, .4);
+    }
+
+    .after-title {
+      font-family: var(--ff-display);
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      letter-spacing: .04em;
+      color: var(--white);
+      line-height: .9;
+    }
+
+    .after-title em {
+      color: var(--coral);
+      font-style: normal;
+    }
+
+    .play-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--coral);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      transition: background .25s, transform .2s;
+      text-decoration: none;
+    }
+
+    .play-btn:hover {
+      background: var(--coral);
+      transform: scale(1.08);
+    }
+
+    .play-tri {
+      width: 0;
+      height: 0;
+      border-top: 14px solid transparent;
+      border-bottom: 14px solid transparent;
+      border-left: 24px solid var(--coral);
+      margin-left: 4px;
+      transition: border-left-color .25s;
+    }
+
+    .play-btn:hover .play-tri {
+      border-left-color: var(--white);
+    }
+
+    .after-sub {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      letter-spacing: .1em;
+      color: rgba(245, 242, 236, .3);
+    }
+
+    /* side text */
+    .after-side {
+      position: absolute;
+      left: 2.5rem;
+      bottom: 2rem;
+      z-index: 2;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--ff-mono);
+      font-size: .62rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, .2);
+    }
+
+    /* ══════════════════════════════════════
+     05 SCHEDULE
+  ══════════════════════════════════════ */
+    #schedule {
+      background: var(--ink2);
+      padding: 6rem 0;
+    }
+
+    .schedule-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .day-tabs {
+      display: flex;
+      gap: 0;
+    }
+
+    .day-tab {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .65rem 1.4rem;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: transparent;
+      color: rgba(245, 242, 236, .4);
+      cursor: none;
+      transition: all .2s;
+      border-right: none;
+    }
+
+    .day-tab:last-child {
+      border-right: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .day-tab.active {
+      background: var(--purple);
+      color: var(--white);
+      border-color: var(--purple);
+    }
+
+    .day-tab:hover:not(.active) {
+      background: rgba(255, 255, 255, .06);
+      color: var(--white);
+    }
+
+    .schedule-panel {
+      display: none;
+    }
+
+    .schedule-panel.active {
+      display: block;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tl-row {
+      display: grid;
+      grid-template-columns: 185px 1fr auto;
+      gap: 0 1.5rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+      align-items: start;
+      position: relative;
+      transition: background .2s;
+    }
+
+    .tl-row:hover {
+      background: rgba(255, 255, 255, .03);
+      border-radius: 4px;
+      padding-left: .75rem;
+    }
+
+    .tl-row::before {
+      content: '';
+      position: absolute;
+      left: 183px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .tl-time {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      letter-spacing: .06em;
+      color: var(--grey);
+      padding-top: .1rem;
+      line-height: 1.4;
+    }
+
+    .tl-name {
+      font-family: var(--ff-body);
+      font-size: .92rem;
+      font-weight: 500;
+      color: var(--white);
+      line-height: 1.3;
+      padding-top: .05rem;
+    }
+
+    .tl-venue {
+      font-family: var(--ff-mono);
+      font-size: .62rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, .3);
+      white-space: nowrap;
+      padding-top: .15rem;
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: 178px;
+      top: 1.25rem;
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      transform: rotate(45deg);
+      z-index: 1;
+    }
+
+    /* category colors for dots */
+    .tl-workshop .tl-dot {
+      background: var(--lime);
+    }
+
+    .tl-workshop .tl-time {
+      color: var(--lime);
+      opacity: .7;
+    }
+
+    .tl-cultural .tl-dot {
+      background: var(--coral);
+    }
+
+    .tl-cultural .tl-time {
+      color: var(--coral);
+      opacity: .7;
+    }
+
+    .tl-game .tl-dot {
+      background: var(--purple);
+    }
+
+    .tl-game .tl-time {
+      color: var(--purple);
+      opacity: .9;
+    }
+
+    .tl-ceremony .tl-dot {
+      background: var(--mauve);
+    }
+
+    .tl-perf .tl-dot {
+      background: var(--white);
+    }
+
+    /* ══════════════════════════════════════
+     06 REGISTER CTA
+  ══════════════════════════════════════ */
+    #register {
+      background: var(--lime);
+      padding: 7rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reg-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(19, 16, 26, .1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(19, 16, 26, .1) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .reg-escaped-sq {
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 300px;
+      height: 300px;
+      background: rgba(19, 16, 26, .08);
+      transform: rotate(22deg);
+    }
+
+    .reg-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+
+    .reg-title {
+      font-family: var(--ff-display);
+      font-size: clamp(3.5rem, 9vw, 9rem);
+      line-height: .88;
+      letter-spacing: .01em;
+      color: var(--ink);
+    }
+
+    .reg-sub {
+      font-family: var(--ff-mono);
+      font-size: .8rem;
+      letter-spacing: .1em;
+      color: rgba(19, 16, 26, .5);
+      text-transform: uppercase;
+    }
+
+    .btn-dark {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--ink);
+      color: var(--lime);
+      font-family: var(--ff-mono);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 1.1rem 2.5rem;
+      text-decoration: none;
+      cursor: none;
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      transition: background .2s, color .2s;
+    }
+
+    .btn-dark:hover {
+      background: var(--coral);
+      color: var(--white);
+    }
+
+    /* ══════════════════════════════════════
+     07 FOOTER
+  ══════════════════════════════════════ */
+    footer {
+      background: var(--ink);
+      padding: 4rem 0 2rem;
+      border-top: 1px solid rgba(181, 227, 39, .15);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 640px) {
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .footer-logo-wrap svg {
+      height: 60px;
+      width: auto;
+      margin-bottom: .75rem;
+    }
+
+    .footer-tagline {
+      font-family: var(--ff-mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      color: var(--grey);
+      text-transform: uppercase;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+
+    .footer-links a {
+      font-family: var(--ff-mono);
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, .4);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--lime);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, .06);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      letter-spacing: .08em;
+      color: rgba(245, 242, 236, .2);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .footer-socials a {
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, .3);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .footer-socials a:hover {
+      color: var(--coral);
+    }
+
+    /* Wavy top border on footer */
+    .footer-wave {
+      fill: var(--ink);
+    }
+
+    /* ══════════════════════════════════════
+       ABOUT SECTION
+    ══════════════════════════════════════ */
+    #about {
+      background: var(--ink2);
+      padding: 7rem 0 5rem;
+    }
+
+    .about-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      margin-bottom: 5rem;
+    }
+
+    @media (max-width: 900px) {
+      .about-intro {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    .about-body {
+      font-family: var(--ff-body);
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(245, 242, 236, .65);
+      margin-top: 1.5rem;
+    }
+
+    .about-body strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* Stats strip */
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-top: .5rem;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+
+    .stat-num {
+      font-family: var(--ff-display);
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 1;
+      color: var(--lime);
+    }
+
+    .stat-label {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--grey);
+      padding-bottom: .4rem;
+      line-height: 1.4;
+    }
+
+    /* Gallery — 2025 glimpses */
+    .gallery-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      gap: 1rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 6px;
+    }
+
+    .g-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--plum);
+      cursor: none;
+    }
+
+    /* Aspect ratio via padding trick */
+    .g-item::before {
+      content: '';
+      display: block;
+    }
+
+    .g-item img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease, filter .5s ease;
+      filter: saturate(.8);
+    }
+
+    .g-item:hover img {
+      transform: scale(1.05);
+      filter: saturate(1.1);
+    }
+
+    /* Placeholder when no real image — branded gradient tiles */
+    .g-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem 1.1rem;
+    }
+
+    .g-placeholder-label {
+      font-family: var(--ff-mono);
+      font-size: .6rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, .4);
+    }
+
+    /* Hover overlay */
+    .g-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(19, 16, 26, .55);
+      opacity: 0;
+      transition: opacity .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .g-item:hover .g-overlay {
+      opacity: 1;
+    }
+
+    .g-overlay-icon {
+      font-family: var(--ff-display);
+      font-size: 1.8rem;
+      color: var(--lime);
+      letter-spacing: .05em;
+    }
+
+    /* Grid layout — mosaic */
+    .g-item:nth-child(1) {
+      grid-column: span 5;
+    }
+
+    .g-item:nth-child(2) {
+      grid-column: span 4;
+    }
+
+    .g-item:nth-child(3) {
+      grid-column: span 3;
+    }
+
+    .g-item:nth-child(4) {
+      grid-column: span 3;
+    }
+
+    .g-item:nth-child(5) {
+      grid-column: span 5;
+    }
+
+    .g-item:nth-child(6) {
+      grid-column: span 4;
+    }
+
+    .g-item:nth-child(7) {
+      grid-column: span 4;
+    }
+
+    .g-item:nth-child(8) {
+      grid-column: span 4;
+    }
+
+    .g-item:nth-child(9) {
+      grid-column: span 4;
+    }
+
+    /* Aspect ratios */
+    .g-ratio-land::before {
+      padding-top: 66%;
+    }
+
+    .g-ratio-port::before {
+      padding-top: 130%;
+    }
+
+    .g-ratio-sq::before {
+      padding-top: 100%;
+    }
+
+    .g-ratio-wide::before {
+      padding-top: 52%;
+    }
+
+    /* Placeholder bg colors per tile */
+    .g-c1 {
+      background: linear-gradient(135deg, #2a1a2e, #3D2C3E);
+    }
+
+    .g-c2 {
+      background: linear-gradient(135deg, #1a1026, #2d1a3e);
+    }
+
+    .g-c3 {
+      background: linear-gradient(135deg, #1e0f1a, #3a1a2a);
+    }
+
+    .g-c4 {
+      background: linear-gradient(135deg, #0d0d1a, #1a1030);
+    }
+
+    .g-c5 {
+      background: linear-gradient(135deg, #1a1420, #2e1e38);
+    }
+
+    .g-c6 {
+      background: linear-gradient(135deg, #180a1a, #301828);
+    }
+
+    .g-c7 {
+      background: linear-gradient(135deg, #1a1626, #28183a);
+    }
+
+    .g-c8 {
+      background: linear-gradient(135deg, #0e0e1e, #1e1230);
+    }
+
+    .g-c9 {
+      background: linear-gradient(135deg, #1c1022, #321a34);
+    }
+
+    /* Accent line on some tiles */
+    .g-item:nth-child(1) .g-placeholder {
+      border-left: 2px solid var(--coral);
+    }
+
+    .g-item:nth-child(5) .g-placeholder {
+      border-left: 2px solid var(--lime);
+    }
+
+    .g-item:nth-child(7) .g-placeholder {
+      border-left: 2px solid var(--purple);
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 4px;
+      }
+
+      .g-item:nth-child(1) {
+        grid-column: span 4;
+      }
+
+      .g-item:nth-child(2) {
+        grid-column: span 2;
+      }
+
+      .g-item:nth-child(3) {
+        grid-column: span 3;
+      }
+
+      .g-item:nth-child(4) {
+        grid-column: span 3;
+      }
+
+      .g-item:nth-child(5) {
+        grid-column: span 3;
+      }
+
+      .g-item:nth-child(6) {
+        grid-column: span 3;
+      }
+
+      .g-item:nth-child(7) {
+        grid-column: span 2;
+      }
+
+      .g-item:nth-child(8) {
+        grid-column: span 2;
+      }
+
+      .g-item:nth-child(9) {
+        grid-column: span 2;
+      }
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── PAGE LOADER ─── */
+    #page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+
+    #page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Animated grid background on loader */
+    @keyframes gridShift {
+      to {
+        background-position: 60px 60px;
+      }
+    }
+
+    .loader-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(181, 227, 39, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(181, 227, 39, .06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridShift 20s linear infinite;
+    }
+
+    /* Coral blob on loader */
+    .loader-blob {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      background: var(--coral);
+      opacity: .07;
+      filter: blur(90px);
+      border-radius: 50%;
+      animation: blobPulse 6s ease-in-out infinite alternate;
+    }
+
+    /* Purple blob opposite side */
+    .loader-blob-2 {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      background: var(--purple);
+      opacity: .06;
+      filter: blur(80px);
+      border-radius: 50%;
+      bottom: 10%;
+      right: 8%;
+      animation: blobPulse 8s ease-in-out infinite alternate-reverse;
+    }
+
+    .loader-logo-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .loader-logo-wrap img {
+      display: block;
+      height: clamp(100px, 18vw, 200px);
+      width: auto;
+      animation: loader-glitch-main 1.4s steps(1) infinite;
+    }
+
+    .loader-logo-wrap::before,
+    .loader-logo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('Logo.png') no-repeat center / contain;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .loader-logo-wrap::before {
+      filter: hue-rotate(180deg) saturate(1.5);
+      animation: loader-glitch-before 1.4s steps(1) infinite;
+    }
+
+    .loader-logo-wrap::after {
+      filter: hue-rotate(300deg) saturate(1.5);
+      animation: loader-glitch-after 1.4s steps(1) infinite;
+    }
+
+    @keyframes loader-glitch-main {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+        filter: brightness(1);
+      }
+
+      8% {
+        transform: translate(-3px, 0);
+        filter: brightness(1.3) drop-shadow(0 0 6px #B5E327);
+      }
+
+      16% {
+        transform: translate(3px, 0);
+        filter: brightness(0.9);
+      }
+
+      24% {
+        transform: translate(0, 0);
+        filter: brightness(1);
+      }
+
+      50% {
+        transform: translate(-2px, 2px);
+        filter: brightness(1.2) drop-shadow(0 0 8px #F75C6E);
+      }
+
+      58% {
+        transform: translate(2px, -1px);
+        filter: brightness(0.95);
+      }
+
+      66% {
+        transform: translate(0, 0);
+        filter: brightness(1);
+      }
+
+      82% {
+        transform: translate(-3px, 0);
+        filter: brightness(1.3) drop-shadow(0 0 5px #B5E327);
+      }
+
+      90% {
+        transform: translate(2px, 0);
+        filter: brightness(0.92);
+      }
+    }
+
+    @keyframes loader-glitch-before {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      8% {
+        transform: translate(-5px, 0);
+        opacity: 0.22;
+      }
+
+      16% {
+        transform: translate(4px, 0);
+        opacity: 0.14;
+      }
+
+      24% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      50% {
+        transform: translate(-4px, 2px);
+        opacity: 0.2;
+      }
+
+      58% {
+        transform: translate(5px, 0);
+        opacity: 0.12;
+      }
+
+      66% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      82% {
+        transform: translate(-5px, 0);
+        opacity: 0.24;
+      }
+
+      90% {
+        transform: translate(3px, 0);
+        opacity: 0.1;
+      }
+    }
+
+    @keyframes loader-glitch-after {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      8% {
+        transform: translate(5px, 0);
+        opacity: 0.18;
+      }
+
+      16% {
+        transform: translate(-3px, 0);
+        opacity: 0.12;
+      }
+
+      24% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      50% {
+        transform: translate(4px, -2px);
+        opacity: 0.16;
+      }
+
+      58% {
+        transform: translate(-5px, 0);
+        opacity: 0.12;
+      }
+
+      66% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      82% {
+        transform: translate(5px, 0);
+        opacity: 0.2;
+      }
+
+      90% {
+        transform: translate(-2px, 0);
+        opacity: 0.09;
+      }
+    }
+
+    /* Progress bar */
+    .loader-bar-wrap {
+      position: relative;
+      z-index: 1;
+      width: clamp(160px, 30vw, 280px);
+      height: 2px;
+      background: rgba(245, 242, 236, .1);
+    }
+
+    .loader-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--lime);
+      box-shadow: 0 0 8px var(--lime);
+      animation: loaderFill 2s cubic-bezier(.4, 0, .2, 1) forwards;
+    }
+
+    @keyframes loaderFill {
+      0% {
+        width: 0%;
+      }
+
+      60% {
+        width: 75%;
+      }
+
+      85% {
+        width: 92%;
+      }
+
+      100% {
+        width: 100%;
+      }
+    }
+
+    /* Freeze glitch pseudo-layers when flying */
+    .loader-logo-wrap.flying::before,
+    .loader-logo-wrap.flying::after {
+      animation: none !important;
+      opacity: 0 !important;
+      transition: opacity 0.15s ease;
+    }
+
+    /* Small label under bar */
+    .loader-label {
+      position: relative;
+      z-index: 1;
+      font-family: var(--ff-mono);
+      font-size: .6rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, .25);
+      animation: labelBlink 1.4s steps(1) infinite;
+    }
+
+    @keyframes labelBlink {
+
+      0%,
+      49% {
+        opacity: 1;
+      }
+
+      50%,
+      100% {
+        opacity: .3;
+      }
+    }
+
+    /* Scan-line sweep */
+    .loader-scanline {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(to bottom,
+          transparent,
+          transparent 3px,
+          rgba(0, 0, 0, .08) 3px,
+          rgba(0, 0, 0, .08) 4px);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE — MOBILE FIRST
+    ═══════════════════════════════════════ */
+
+    /* ── Touch devices: restore default cursor ── */
+    @media (hover: none) {
+      body {
+        cursor: auto;
+      }
+
+      .cursor {
+        display: none;
+      }
+
+      a,
+      button {
+        cursor: pointer;
+      }
+    }
+
+    /* ─── VIDEO MODAL ─── */
+    #video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 99998;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 8, 14, 0);
+      visibility: hidden;
+      transition: background .35s ease, visibility 0s linear .35s;
+    }
+
+    #video-modal.open {
+      background: rgba(10, 8, 14, .92);
+      visibility: visible;
+      transition: background .35s ease, visibility 0s linear 0s;
+    }
+
+    .vm-wrap {
+      position: relative;
+      width: min(900px, 92vw);
+      aspect-ratio: 16 / 9;
+      transform: scale(.88) translateY(24px);
+      opacity: 0;
+      transition: transform .4s cubic-bezier(.25, .8, .25, 1), opacity .4s ease;
+    }
+
+    #video-modal.open .vm-wrap {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    .vm-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .vm-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: .5;
+    }
+
+    .vm-overlay-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .vm-title {
+      font-family: var(--ff-display);
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+      letter-spacing: .06em;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    .vm-watch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      background: #FF0000;
+      color: #fff;
+      font-family: var(--ff-mono);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: .9rem 2rem;
+      border-radius: 3px;
+      transition: background .2s, transform .15s;
+    }
+
+    .vm-watch-btn:hover {
+      background: #cc0000;
+      transform: scale(1.04);
+    }
+
+    .vm-watch-note {
+      font-family: var(--ff-mono);
+      font-size: .6rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(245,242,236,.35);
+    }
+
+    .vm-close {
+      position: absolute;
+      top: -44px;
+      right: 0;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: 1px solid rgba(245, 242, 236, .3);
+      border-radius: 50%;
+      color: var(--white);
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s, border-color .2s;
+    }
+
+    .vm-close:hover {
+      background: var(--coral);
+      border-color: var(--coral);
+    }
+
+    /* Pulse ring on play button */
+    .play-btn {
+      position: relative;
+    }
+
+    .play-btn::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid var(--coral);
+      opacity: 0;
+      animation: playRing 2.2s ease-out infinite;
+    }
+
+    @keyframes playRing {
+      0% {
+        inset: -4px;
+        opacity: .7;
+      }
+
+      100% {
+        inset: -22px;
+        opacity: 0;
+      }
+    }
+
+    /* ── ≤ 1024px : tablets ── */
+    @media (max-width: 1024px) {
+      nav {
+        padding: 1rem 1.75rem;
+      }
+
+      .container {
+        padding: 0 1.75rem;
+      }
+
+      .hero-tagline {
+        font-size: clamp(2rem, 7vw, 4.5rem);
+      }
+
+      .perf-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* ── ≤ 768px : mobile landscape / small tablet ── */
+    @media (max-width: 768px) {
+
+      /* NAV */
+      nav {
+        padding: .9rem 1.25rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-hamburger {
+        display: flex;
+      }
+
+      .mobile-menu {
+        display: flex;
+      }
+
+      .nav-reg {
+        font-size: .65rem;
+        padding: .45rem .9rem;
+      }
+
+      /* HERO */
+      #hero {
+        padding-bottom: 3.5rem;
+        padding-top: 5.5rem;
+        min-height: 100svh;
+        justify-content: center;
+      }
+
+      .container {
+        padding: 0 1.25rem;
+      }
+
+      .hero-eyebrow {
+        font-size: .62rem;
+        margin-bottom: .75rem;
+      }
+
+      .hero-logo-wrap img {
+        height: clamp(60px, 22vw, 120px);
+      }
+
+      .hero-logo-wrap::before,
+      .hero-logo-wrap::after {
+        background-size: contain;
+      }
+
+      .hero-tagline {
+        font-size: clamp(2rem, 11vw, 3.5rem);
+        margin-bottom: 2rem;
+      }
+
+      .hero-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+
+      /* COUNTDOWN */
+      .countdown {
+        gap: .75rem;
+      }
+
+      .cd-num {
+        font-size: clamp(1.8rem, 8vw, 3rem);
+        min-width: clamp(52px, 13vw, 80px);
+        padding: .25rem .5rem;
+      }
+
+      .cd-sep {
+        font-size: 2rem;
+        margin-top: .2rem;
+      }
+
+      .cd-label {
+        font-size: .55rem;
+      }
+
+      /* CTA */
+      .hero-cta-wrap {
+        align-items: flex-start;
+      }
+
+      .hero-date {
+        text-align: left;
+      }
+
+      .btn-primary {
+        padding: .85rem 1.75rem;
+        font-size: .75rem;
+      }
+
+      /* EVENTS */
+      .events-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .filter-pills {
+        flex-wrap: wrap;
+      }
+
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #events {
+        padding: 4rem 0 3rem;
+      }
+
+      /* PERFORMANCES */
+      .perf-grid {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+
+      .perf-card {
+        min-height: 220px;
+        padding: 1.75rem;
+      }
+
+      #performances {
+        padding: 4rem 0;
+      }
+
+      /* AFTERMOVIE */
+      .aftermovie-inner {
+        min-height: 380px;
+      }
+
+      .after-title {
+        font-size: clamp(2rem, 10vw, 3.5rem);
+      }
+
+      .after-side {
+        display: none;
+      }
+
+      /* SCHEDULE */
+      #schedule {
+        padding: 4rem 0;
+      }
+
+      .schedule-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .75rem;
+      }
+
+      .day-tabs {
+        align-self: stretch;
+      }
+
+      .day-tab {
+        font-size: .65rem;
+        padding: .55rem 1rem;
+        flex: 1;
+        text-align: center;
+      }
+
+      .tl-row {
+        grid-template-columns: 150px 1fr;
+        gap: 0 1rem;
+      }
+
+      .tl-venue {
+        display: none;
+      }
+
+      .tl-row::before {
+        left: 148px;
+      }
+
+      .tl-dot {
+        left: 143px;
+      }
+
+      .tl-name {
+        font-size: .85rem;
+      }
+
+      .tl-time {
+        font-size: .62rem;
+      }
+
+      /* REGISTER */
+      #register {
+        padding: 5rem 0;
+      }
+
+      .reg-title {
+        font-size: clamp(3rem, 14vw, 6rem);
+      }
+
+      .btn-dark {
+        padding: .9rem 2rem;
+        font-size: .75rem;
+      }
+
+      /* FOOTER */
+      .footer-top {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .footer-links {
+        align-items: flex-start;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .75rem;
+      }
+
+      .footer-socials {
+        gap: 1rem;
+      }
+    }
+
+    /* ── ≤ 480px : small phones ── */
+    @media (max-width: 480px) {
+      nav {
+        padding: .75rem 1rem;
+      }
+
+      .nav-logo img {
+        height: 30px;
+      }
+
+      .nav-reg {
+        display: none;
+      }
+
+      /* too cramped — rely on hero CTA */
+
+      #hero {
+        padding-bottom: 3rem;
+        padding-top: 5rem;
+      }
+
+      .hero-tagline {
+        font-size: clamp(1.8rem, 12vw, 3rem);
+      }
+
+      .countdown {
+        gap: .5rem;
+      }
+
+      .cd-num {
+        font-size: clamp(1.5rem, 9vw, 2.4rem);
+        min-width: clamp(44px, 14vw, 68px);
+        padding: .2rem .4rem;
+      }
+
+      .cd-sep {
+        font-size: 1.5rem;
+      }
+
+      .ev-name {
+        font-size: 1.3rem;
+      }
+
+      .perf-name {
+        font-size: clamp(1.6rem, 7vw, 2.4rem);
+      }
+
+      .tl-row {
+        grid-template-columns: 140px 1fr;
+      }
+
+      .tl-row::before {
+        left: 138px;
+      }
+
+      .tl-dot {
+        left: 133px;
+      }
+
+      .reg-title {
+        font-size: clamp(2.5rem, 16vw, 5rem);
+      }
+
+      footer {
+        padding: 3rem 0 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─── PAGE LOADER ─── -->
+  <div id="page-loader">
+    <div class="loader-grid"></div>
+    <div class="loader-blob"></div>
+    <div class="loader-blob-2"></div>
+    <div class="loader-scanline"></div>
+    <div class="loader-logo-wrap">
+      <img src="Logo.png" alt="INYAN 2026">
+    </div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar"></div>
+    </div>
+    <span class="loader-label">Initialising &nbsp;·&nbsp; INYAN 2026</span>
+  </div>
+
+  <div class="cursor" id="cursor"></div>
+
+  <!-- ─── NAV ─── -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="logo-inyan.png" alt="INYAN" style="height:38px;width:auto;display:block;">
+      <span class="collab-sep">×</span>
+      <img src="spavlogo.png" alt="SPAV" class="spav-logo-img" style="height:32px;">
+    </a>
+    <div class="nav-links">
+      <a href="#events">Events</a>
+      <a href="#performances">Artists</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#about">About</a>
+    </div>
+    <a href="#about" class="nav-reg">Register Now</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ─── MOBILE MENU ─── -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+      <a href="#events"       class="mobile-link" data-num="01">Events</a>
+      <a href="#performances" class="mobile-link" data-num="02">Artists</a>
+      <a href="#schedule"     class="mobile-link" data-num="03">Schedule</a>
+      <a href="#about"        class="mobile-link" data-num="04">About</a>
+      <a href="#register"     class="mobile-link mobile-link-cta" data-num="05">Register</a>
+    </div>
+    <div class="mobile-menu-footer">INYAN 2026 &nbsp;·&nbsp; SPAV Vijayawada</div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+     01 HERO
+══════════════════════════════════════ -->
+  <section id="hero">
+    <canvas id="hero-canvas" class="hero-grid"></canvas>
+    <div class="hero-coral-blob"></div>
+
+
+    <div class="container hero-content">
+      <div class="hero-eyebrow">School of Planning &amp; Architecture, Vijayawada &nbsp;·&nbsp; Annual Fest 2026</div>
+
+      <!-- INYAN Logo -->
+      <div class="hero-logo-wrap">
+        <img src="Logo.png" alt="INYAN 2026">
+      </div>
+
+      <div class="hero-bottom">
+        <!-- Countdown -->
+        <div class="countdown" id="countdown">
+          <div class="cd-unit">
+            <div class="cd-num" id="cd-days">00</div>
+            <div class="cd-label">Days</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit">
+            <div class="cd-num" id="cd-hours">00</div>
+            <div class="cd-label">Hours</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit">
+            <div class="cd-num" id="cd-mins">00</div>
+            <div class="cd-label">Mins</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit">
+            <div class="cd-num" id="cd-secs">00</div>
+            <div class="cd-label">Secs</div>
+          </div>
+        </div>
+
+        <!-- Live state — shown when countdown expires -->
+        <div class="cd-live" id="cd-live">
+          <div class="cd-live-title">INYAN IS LIVE</div>
+          <div class="cd-live-sub">Step off the Know. We're here.</div>
+        </div>
+
+        <div class="hero-cta-wrap">
+          <div class="hero-date">23 – 24 March 2026 &nbsp;·&nbsp; SPAV Campus, Vijayawada</div>
+          <a href="#register" class="btn-primary">
+            <span>Register Now</span>
+            <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+     02 FEATURED EVENTS
+══════════════════════════════════════ -->
+  <section id="events">
+    <div class="container">
+      <div class="events-header reveal">
+        <div>
+          <span class="section-tag">02 — Featured Events</span>
+          <h2 class="section-title">THE<br>GRID</h2>
+        </div>
+        <div class="filter-pills">
+          <button class="pill active" onclick="filterEvents('all', this)">All</button>
+          <button class="pill" onclick="filterEvents('cultural', this)">Cultural</button>
+          <button class="pill" onclick="filterEvents('technical', this)">Technical</button>
+          <button class="pill" onclick="filterEvents('workshop', this)">Workshop</button>
+          <button class="pill" onclick="filterEvents('game', this)">Games</button>
+        </div>
+      </div>
+
+      <div class="events-grid" id="eventsGrid">
+
+        <div class="event-card card-cultural reveal" data-cat="cultural">
+          <span class="ev-cat">Cultural</span>
+          <div class="ev-name">Flash Mob — Club 29</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 9:45 – 9:55 AM</span>
+            <span><span class="ev-icon">📍</span> Basketball Court</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">01</div>
+        </div>
+
+        <div class="event-card card-cultural reveal" data-cat="cultural">
+          <span class="ev-cat">Cultural</span>
+          <div class="ev-name">Cycling Event (SPAVELO)</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 10:00 – 11:00 AM</span>
+            <span><span class="ev-icon">📍</span> Main OAT near Entry</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">02</div>
+        </div>
+
+        <div class="event-card card-cultural reveal" data-cat="cultural">
+          <span class="ev-cat">Cultural</span>
+          <div class="ev-name">Antakshari — Club Ritmo</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 10:00 AM – 12:00 PM</span>
+            <span><span class="ev-icon">📍</span> Mess</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">03</div>
+        </div>
+
+        <div class="event-card card-cultural reveal" data-cat="cultural">
+          <span class="ev-cat">Cultural</span>
+          <div class="ev-name">Biennale Photo Exhibition — Club Tasveer</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 10:00 AM – 5:00 PM</span>
+            <span><span class="ev-icon">📍</span> First Floor (Near Board Room)</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">04</div>
+        </div>
+
+        <div class="event-card card-cultural reveal" data-cat="cultural">
+          <span class="ev-cat">Cultural</span>
+          <div class="ev-name">Market Space &amp; Art Exhibition — Club Atlier</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 10:00 AM – 5:00 PM</span>
+            <span><span class="ev-icon">📍</span> Cafeteria</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">05</div>
+        </div>
+
+        <div class="event-card card-cultural reveal" data-cat="cultural">
+          <span class="ev-cat">Cultural</span>
+          <div class="ev-name">Mission Supernova: The Cosmic Corridor</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 11:00 AM – 1:00 PM</span>
+            <span><span class="ev-icon">📍</span> Near Chemical Lab &amp; Consultancy</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">06</div>
+        </div>
+
+        <div class="event-card card-workshop reveal" data-cat="workshop">
+          <span class="ev-cat">Workshop</span>
+          <div class="ev-name">Traditional Crafts &amp; Sustainable Materials</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 10:00 AM – 12:00 PM</span>
+            <span><span class="ev-icon">📍</span> 1st Year Studio</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">07</div>
+        </div>
+
+        <div class="event-card card-workshop reveal" data-cat="workshop">
+          <span class="ev-cat">Workshop</span>
+          <div class="ev-name">Cycling, Urban Mobility &amp; Sustainable Lifestyles</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 11:00 AM – 1:00 PM</span>
+            <span><span class="ev-icon">📍</span> First Floor OAT</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">08</div>
+        </div>
+
+        <div class="event-card card-workshop reveal" data-cat="workshop">
+          <span class="ev-cat">Workshop</span>
+          <div class="ev-name">Traditional Leather Puppetry Making</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 11:00 AM – 1:00 PM</span>
+            <span><span class="ev-icon">📍</span> Exhibition Hall</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">09</div>
+        </div>
+
+        <div class="event-card card-technical reveal" data-cat="technical">
+          <span class="ev-cat">Technical</span>
+          <div class="ev-name">Immersive Experience — Club IO</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 12:00 PM – 9:00 PM</span>
+            <span><span class="ev-icon">📍</span> M.Des Room near Auditorium</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">10</div>
+        </div>
+
+        <div class="event-card card-game reveal" data-cat="game">
+          <span class="ev-cat">Game</span>
+          <div class="ev-name">Among Us — Live (Club Aira)</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 1:30 – 4:30 PM</span>
+            <span><span class="ev-icon">📍</span> 2nd–3rd Year Studio</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">11</div>
+        </div>
+
+        <div class="event-card card-game reveal" data-cat="game">
+          <span class="ev-cat">Game</span>
+          <div class="ev-name">Treasure Hunt — Anaadyanta</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 1:30 – 4:30 PM</span>
+            <span><span class="ev-icon">📍</span> Academic Block</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">12</div>
+        </div>
+
+        <div class="event-card card-workshop reveal" data-cat="workshop">
+          <span class="ev-cat">Workshop</span>
+          <div class="ev-name">Mentalism &amp; Illusion: Interactive Learning</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 2:00 – 3:00 PM</span>
+            <span><span class="ev-icon">📍</span> Exhibition Hall</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">13</div>
+        </div>
+
+        <div class="event-card card-workshop reveal" data-cat="workshop">
+          <span class="ev-cat">Workshop</span>
+          <div class="ev-name">Movement &amp; Rhythm: Freestyle</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 3:00 – 4:30 PM</span>
+            <span><span class="ev-icon">📍</span> First Floor OAT</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">14</div>
+        </div>
+
+        <div class="event-card card-cultural reveal" data-cat="cultural">
+          <span class="ev-cat">Cultural</span>
+          <div class="ev-name">Karaoke Night — Club Ritmo</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 9:00 – 10:30 PM</span>
+            <span><span class="ev-icon">📍</span> Cafeteria</span>
+            <span><span class="ev-icon">📅</span> Day 1</span>
+          </div>
+          <div class="ev-num">15</div>
+        </div>
+
+        <div class="event-card card-game reveal" data-cat="game">
+          <span class="ev-cat">Game</span>
+          <div class="ev-name">Warzone — Club IO</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 9:00 – 11:00 AM</span>
+            <span><span class="ev-icon">📍</span> Basketball Court</span>
+            <span><span class="ev-icon">📅</span> Day 2</span>
+          </div>
+          <div class="ev-num">16</div>
+        </div>
+
+        <div class="event-card card-workshop reveal" data-cat="workshop">
+          <span class="ev-cat">Workshop</span>
+          <div class="ev-name">Production Design &amp; Cinematography</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 10:00 AM – 12:00 PM</span>
+            <span><span class="ev-icon">📍</span> Exhibition Hall</span>
+            <span><span class="ev-icon">📅</span> Day 2</span>
+          </div>
+          <div class="ev-num">17</div>
+        </div>
+
+        <div class="event-card card-cultural reveal" data-cat="cultural">
+          <span class="ev-cat">Cultural</span>
+          <div class="ev-name">Musical Performance with Dance — Grand Finale</div>
+          <div class="ev-meta">
+            <span><span class="ev-icon">🕐</span> 8:50 – 10:00 PM</span>
+            <span><span class="ev-icon">📍</span> Main Stage</span>
+            <span><span class="ev-icon">📅</span> Day 2</span>
+          </div>
+          <div class="ev-num">18</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+     03 PERFORMANCES / GUESTS
+══════════════════════════════════════ -->
+  <section id="performances">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-tag">03 — Performances &amp; Guests</span>
+        <h2 class="section-title">ON<br>STAGE</h2>
+      </div>
+
+      <div class="perf-grid">
+
+        <div class="perf-card perf-cultural reveal">
+          <div class="perf-card-bg">
+            <img src="mono.svg" alt="">
+          </div>
+          <div class="perf-card-content">
+            <span class="perf-label">Day 1 · Auditorium</span>
+            <div class="perf-name">Mind Reading &amp; Illusion</div>
+            <div class="perf-desc">An electrifying evening performance blending mentalism with theatrical illusion. 7:00
+              PM – 8:00 PM.</div>
+          </div>
+        </div>
+
+        <div class="perf-card perf-club reveal">
+          <div class="perf-card-bg">
+            <img src="academic.svg" alt="">
+          </div>
+          <div class="perf-card-content">
+            <span class="perf-label">Day 1 · Auditorium</span>
+            <div class="perf-name">Academic Awards &amp; Dance</div>
+            <div class="perf-desc">Academic awards ceremony followed by a guest dance performance. 5:00 PM – 6:15 PM.
+            </div>
+          </div>
+        </div>
+
+        <div class="perf-card perf-music reveal">
+          <div class="perf-card-bg">
+            <img src="ritmo.svg" alt="">
+          </div>
+          <div class="perf-card-content">
+            <span class="perf-label">Day 2 · Main Stage</span>
+            <div class="perf-name">Musical Night</div>
+            <div class="perf-desc">The grand finale — live music with dance. Club 29, Ritmo, Anaadyanta and special
+              performers. 8:50 PM onwards.</div>
+          </div>
+        </div>
+
+        <div class="perf-card perf-mystery reveal">
+          <div class="perf-card-bg">
+            <img src="avant.svg" alt="">
+          </div>
+          <div class="perf-card-content">
+            <span class="perf-label">Day 2 · Main Stage</span>
+            <div class="perf-name">Monologue &amp; Avant</div>
+            <div class="perf-desc">Monologue performance followed by the Avant performance. Raw, powerful, unexpected.
+              7:05 PM – 7:20 PM.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+     04 ABOUT
+══════════════════════════════════════ -->
+  <section id="about">
+    <div class="container">
+
+      <!-- Intro grid -->
+      <div class="about-intro">
+        <!-- Left: text -->
+        <div class="reveal">
+          <span class="section-tag">04 — About INYAN</span>
+          <h2 class="section-title">WHAT IS<br>INYAN?</h2>
+          <p class="about-body">
+            <strong>INYAN</strong> is the annual cultural and technical fest of the
+            <strong>School of Planning &amp; Architecture, Vijayawada</strong> — a two-day celebration
+            that transforms the campus into a living laboratory of ideas, art, and human connection.
+          </p>
+          <p class="about-body" style="margin-top:1rem;">
+            The name INYAN is rooted in the spirit of <strong>inquiry and expression</strong> —
+            bringing together students, practitioners, and creatives across disciplines to explore
+            what lies beyond the known. Each edition carries a theme that challenges the boundaries
+            of design thinking. <strong>INYAN 2026</strong> asks: <em style="color:var(--lime);font-style:normal;">what
+              happens at the 65th square?</em>
+          </p>
+          <p class="about-body" style="margin-top:1rem;">
+            From immersive installations and workshops led by master craftspeople, to live performances,
+            games, and a grand musical night — INYAN is where the campus comes alive.
+          </p>
+        </div>
+
+        <!-- Right: stats -->
+        <div class="about-stats reveal">
+          <div class="stat-row">
+            <div class="stat-num">02</div>
+            <div class="stat-label">Days of<br>programs</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-num">09+</div>
+            <div class="stat-label">Events &amp;<br>workshops</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-num">06+</div>
+            <div class="stat-label">Student clubs<br>performing</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-num" style="color:var(--coral);">∞</div>
+            <div class="stat-label">Ideas beyond<br>the known</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery: INYAN 2025 glimpses -->
+      <div class="gallery-header reveal">
+        <div>
+          <span class="section-tag">INYAN 2025 — Glimpses</span>
+          <h3 class="section-title" style="font-size:clamp(2rem,5vw,4rem);">LAST<br>YEAR</h3>
+        </div>
+        <a href="https://www.youtube.com/watch?v=Z_Y6_5LNaXU" target="_blank" class="btn-primary" style="align-self:flex-end;">
+          <span>Watch Aftermovie</span>
+          <span class="btn-arrow">↗</span>
+        </a>
+      </div>
+
+      <div class="gallery-grid reveal">
+
+        <!-- Replace src with actual INYAN 2025 photos -->
+        <div class="g-item g-ratio-land g-c1">
+          <div class="g-placeholder"><span class="g-placeholder-label">Opening · Day 1</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+        <div class="g-item g-ratio-land g-c2">
+          <div class="g-placeholder"><span class="g-placeholder-label">Performances</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+        <div class="g-item g-ratio-land g-c3">
+          <div class="g-placeholder"><span class="g-placeholder-label">Workshops</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+        <div class="g-item g-ratio-port g-c4">
+          <div class="g-placeholder"><span class="g-placeholder-label">Crowd</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+        <div class="g-item g-ratio-port g-c5">
+          <div class="g-placeholder"><span class="g-placeholder-label">Exhibition</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+        <div class="g-item g-ratio-port g-c6">
+          <div class="g-placeholder"><span class="g-placeholder-label">Art Space</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+        <div class="g-item g-ratio-sq g-c7">
+          <div class="g-placeholder"><span class="g-placeholder-label">Musical Night</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+        <div class="g-item g-ratio-sq g-c8">
+          <div class="g-placeholder"><span class="g-placeholder-label">Club 29</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+        <div class="g-item g-ratio-sq g-c9">
+          <div class="g-placeholder"><span class="g-placeholder-label">Grand Finale</span></div>
+          <div class="g-overlay"><span class="g-overlay-icon">2025</span></div>
+        </div>
+
+      </div>
+      <!-- ↑ Replace placeholder tiles with <img src="your-photo.jpg"> inside each .g-item -->
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+     05 AFTERMOVIE
+══════════════════════════════════════ -->
+  <section id="aftermovie">
+    <div class="aftermovie-inner">
+      <div class="after-bg"></div>
+      <div class="after-grid-overlay"></div>
+      <div class="after-content">
+        <span class="after-eyebrow">See what's coming</span>
+        <h2 class="after-title">INYAN <em>2026</em> Teaser</h2>
+        <!-- Replace href with actual YouTube link -->
+        <button class="play-btn" id="play-teaser" aria-label="Watch INYAN 2026 Teaser"
+          data-video-id="Z_Y6_5LNaXU">
+          <div class="play-tri"></div>
+        </button>
+        <span class="after-sub">INYAN 2026 — Official Teaser</span>
+      </div>
+      <div class="after-side">SPAV · Annual Cultural Fest · Vijayawada</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+     05 SCHEDULE
+══════════════════════════════════════ -->
+  <section id="schedule">
+    <div class="container">
+      <div class="schedule-header reveal">
+        <div>
+          <span class="section-tag">05 — Schedule</span>
+          <h2 class="section-title">TWO<br>DAYS</h2>
+        </div>
+        <div class="day-tabs">
+          <button class="day-tab active" onclick="switchDay(1, this)">Day 1 · 23 Mar</button>
+          <button class="day-tab" onclick="switchDay(2, this)">Day 2 · 24 Mar</button>
+        </div>
+      </div>
+
+      <!-- DAY 1 -->
+      <div class="schedule-panel active" id="day1">
+        <div class="timeline">
+
+          <div class="tl-row tl-ceremony">
+            <div class="tl-dot"></div>
+            <div class="tl-time">9:00 – 9:45 AM</div>
+            <div class="tl-name">Inaugural Ceremony</div>
+            <div class="tl-venue">Basketball Court</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">9:45 – 9:55 AM</div>
+            <div class="tl-name">Flash Mob — Club 29 Performance</div>
+            <div class="tl-venue">Basketball Court</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">10:00 – 11:00 AM</div>
+            <div class="tl-name">Cycling Event (SPAVELO)</div>
+            <div class="tl-venue">Main OAT near Entry</div>
+          </div>
+          <div class="tl-row tl-workshop">
+            <div class="tl-dot"></div>
+            <div class="tl-time">10:00 AM – 12:00 PM</div>
+            <div class="tl-name">Traditional Crafts, Sustainable Materials &amp; Solid Waste Management Workshop — Dept. of Planning</div>
+            <div class="tl-venue">1st Year Studio</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">10:00 AM – 5:00 PM</div>
+            <div class="tl-name">Biennale — Photo Wall Exhibition (Club Tasveer)</div>
+            <div class="tl-venue">First Floor (Near Board Room)</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">10:00 AM – 12:00 PM</div>
+            <div class="tl-name">Antakshari (Club Ritmo)</div>
+            <div class="tl-venue">Mess</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">10:00 AM – 5:00 PM</div>
+            <div class="tl-name">Market Space — Art Exhibition (Club Atlier)</div>
+            <div class="tl-venue">Cafeteria (facing Basketball Court)</div>
+          </div>
+          <div class="tl-row tl-workshop">
+            <div class="tl-dot"></div>
+            <div class="tl-time">11:00 AM – 1:00 PM</div>
+            <div class="tl-name">Cycling, Urban Mobility &amp; Sustainable Lifestyles Workshop — Dept. of Planning</div>
+            <div class="tl-venue">First Floor OAT</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">11:00 AM – 1:00 PM</div>
+            <div class="tl-name">Mission Supernova: The Cosmic Corridor (Supernova Club)</div>
+            <div class="tl-venue">Corridor near Chemical Lab &amp; Consultancy Office</div>
+          </div>
+          <div class="tl-row tl-workshop">
+            <div class="tl-dot"></div>
+            <div class="tl-time">11:00 AM – 1:00 PM</div>
+            <div class="tl-name">Traditional Leather Puppetry Making Workshop — Dept. of Architecture</div>
+            <div class="tl-venue">Exhibition Hall</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">12:00 PM – 9:00 PM</div>
+            <div class="tl-name">Immersive Experience (Club IO)</div>
+            <div class="tl-venue">M.Des Room near Auditorium</div>
+          </div>
+          <div class="tl-row tl-game">
+            <div class="tl-dot"></div>
+            <div class="tl-time">1:30 – 4:30 PM</div>
+            <div class="tl-name">Among Us — Live (Club Aira)</div>
+            <div class="tl-venue">Between 2nd &amp; 3rd Year Studio</div>
+          </div>
+          <div class="tl-row tl-game">
+            <div class="tl-dot"></div>
+            <div class="tl-time">1:30 – 4:30 PM</div>
+            <div class="tl-name">Treasure Hunt (Anaadyanta)</div>
+            <div class="tl-venue">Academic Block</div>
+          </div>
+          <div class="tl-row tl-workshop">
+            <div class="tl-dot"></div>
+            <div class="tl-time">2:00 – 3:00 PM</div>
+            <div class="tl-name">Mentalism &amp; Illusion: Interactive Learning Experience — Dept. of Architecture</div>
+            <div class="tl-venue">Exhibition Hall</div>
+          </div>
+          <div class="tl-row tl-workshop">
+            <div class="tl-dot"></div>
+            <div class="tl-time">3:00 – 4:30 PM</div>
+            <div class="tl-name">Movement &amp; Rhythm: Freestyle Workshop — Dept. of Planning</div>
+            <div class="tl-venue">First Floor OAT</div>
+          </div>
+          <div class="tl-row tl-ceremony">
+            <div class="tl-dot"></div>
+            <div class="tl-time">5:00 – 6:00 PM</div>
+            <div class="tl-name">Academic Awards</div>
+            <div class="tl-venue">Auditorium</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">6:00 – 6:15 PM</div>
+            <div class="tl-name">Dance Performance by Guest</div>
+            <div class="tl-venue">Auditorium</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">6:15 – 7:00 PM</div>
+            <div class="tl-name">Faculty Video</div>
+            <div class="tl-venue">Auditorium</div>
+          </div>
+          <div class="tl-row tl-perf">
+            <div class="tl-dot"></div>
+            <div class="tl-time">7:00 – 8:00 PM</div>
+            <div class="tl-name">Mind Reading &amp; Illusion Performance</div>
+            <div class="tl-venue">Auditorium</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">9:00 PM – 10:30 PM</div>
+            <div class="tl-name">Karaoke Night (Club Ritmo)</div>
+            <div class="tl-venue">Cafeteria</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="schedule-panel" id="day2">
+        <div class="timeline">
+
+          <div class="tl-row tl-game">
+            <div class="tl-dot"></div>
+            <div class="tl-time">9:00 – 11:00 AM</div>
+            <div class="tl-name">Warzone (Club IO)</div>
+            <div class="tl-venue">Basketball Court</div>
+          </div>
+          <div class="tl-row tl-workshop">
+            <div class="tl-dot"></div>
+            <div class="tl-time">10:00 AM – 12:00 PM</div>
+            <div class="tl-name">Production Design &amp; Cinematography Workshop — Dept. of Architecture</div>
+            <div class="tl-venue">Exhibition Hall</div>
+          </div>
+          <div class="tl-row tl-ceremony">
+            <div class="tl-dot"></div>
+            <div class="tl-time">4:30 – 5:30 PM</div>
+            <div class="tl-name">Inaugural &amp; Investiture Ceremony</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">5:30 – 5:45 PM</div>
+            <div class="tl-name">Club 29 Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">5:45 – 6:00 PM</div>
+            <div class="tl-name">Ritmo Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">6:00 – 6:15 PM</div>
+            <div class="tl-name">Anaadyanta Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">6:15 – 6:25 PM</div>
+            <div class="tl-name">Club 29 Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">6:25 – 6:30 PM</div>
+            <div class="tl-name">Filler</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">6:30 – 6:40 PM</div>
+            <div class="tl-name">Ritmo Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">6:40 – 6:45 PM</div>
+            <div class="tl-name">Filler</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">6:45 – 7:05 PM</div>
+            <div class="tl-name">Monologue Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">7:05 – 7:15 PM</div>
+            <div class="tl-name">Avant Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">7:15 – 7:20 PM</div>
+            <div class="tl-name">Filler</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">7:20 – 7:30 PM</div>
+            <div class="tl-name">Club 29 Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">7:30 – 7:40 PM</div>
+            <div class="tl-name">Ritmo Performance</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-cultural">
+            <div class="tl-dot"></div>
+            <div class="tl-time">7:00 PM onwards</div>
+            <div class="tl-name">Dinner</div>
+            <div class="tl-venue">First Floor</div>
+          </div>
+          <div class="tl-row tl-ceremony">
+            <div class="tl-dot"></div>
+            <div class="tl-time">8:45 – 8:50 PM</div>
+            <div class="tl-name">Vote of Thanks</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+          <div class="tl-row tl-perf">
+            <div class="tl-dot"></div>
+            <div class="tl-time">8:50 – 10:00 PM</div>
+            <div class="tl-name">Musical Performance with Dance — Grand Finale</div>
+            <div class="tl-venue">Main Stage</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+     06 REGISTER CTA
+══════════════════════════════════════ -->
+  <section id="register">
+    <div class="reg-grid-bg"></div>
+    <div class="reg-escaped-sq"></div>
+    <div class="container">
+      <div class="reg-content reveal">
+        <h2 class="reg-title">STEP<br>OFF THE<br>KNOWN.</h2>
+        <p class="reg-sub">Registration closes soon &nbsp;·&nbsp; 23–24 March 2026</p>
+        <a href="#" class="btn-dark">
+          Register Now &nbsp;→
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave divider -->
+  <svg class="wave-divider" style="background:var(--lime)" viewBox="0 0 1440 40" preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,40 L0,40 Z" fill="#13101A" />
+  </svg>
+
+  <!-- ══════════════════════════════════════
+     07 FOOTER
+══════════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo-wrap">
+            <div class="footer-collab">
+              <img src="logo-inyan.png" alt="INYAN" style="height:56px;width:auto;display:block;">
+              <span class="footer-collab-sep">×</span>
+              <img src="spavlogo.png" alt="School of Planning & Architecture, Vijayawada" class="footer-spav-img"
+                style="height:52px;">
+            </div>
+          </div>
+          <div class="footer-tagline">Annual Fest · School of Planning &amp; Architecture, Vijayawada</div>
+        </div>
+        <div class="footer-links">
+          <a href="mailto:prsecretary.spavsc@spav.edu.in">prsecretary.spavsc@spav.edu.in</a>
+          <a href="https://www.instagram.com/inyan_spavijayawada/" target="_blank">Instagram</a>
+          <a href="https://spav.ac.in" target="_blank">spav.ac.in</a>
+          <a href="#register">Register</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 INYAN · School of Planning &amp; Architecture, Vijayawada ·
+          inyan.spav.ac.in</span>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/inyan_spavijayawada/" target="_blank">Instagram</a>
+          <a href="https://www.youtube.com/@spavinyan" target="_blank">YouTube</a>
+          <a href="https://www.linkedin.com/company/inyanfest/" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── VIDEO MODAL ─── -->
+  <div id="video-modal" role="dialog" aria-modal="true" aria-label="INYAN 2026 Teaser">
+    <div class="vm-wrap" id="vm-wrap">
+      <button class="vm-close" id="vm-close" aria-label="Close video">✕</button>
+      <!-- iframe injected by JS so video doesn't preload / autoplay on page load -->
+    </div>
+  </div>
+
+  <script>
+    // ─── HERO INTERACTIVE GRID ───
+    (function () {
+      const canvas = document.getElementById('hero-canvas');
+      const ctx = canvas.getContext('2d');
+      const hero = document.getElementById('hero');
+
+      const COLS = 20, ROWS = 14;
+      const PERSP = 900;
+
+      let INFLUENCE = 260, MAX_LIFT = 90;
+
+      let mouse = { x: -9999, y: -9999 };
+      let smooth = { x: -9999, y: -9999 };
+      let time = 0;
+      let ripples = [];
+
+      function resize() {
+        canvas.width  = hero.clientWidth;
+        canvas.height = hero.clientHeight;
+        // Scale interaction radius & lift to screen size
+        const scale = Math.min(1, canvas.width / 1440);
+        const boost = scale < 1 ? 10 : 0;
+        INFLUENCE = Math.round(255 * scale) + boost;
+        MAX_LIFT  = Math.round(85  * scale) + (boost > 0 ? 4 : 0);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Snap smooth on first entry to avoid lerp jump
+      hero.addEventListener('mouseenter', e => {
+        const r = canvas.getBoundingClientRect();
+        smooth.x = mouse.x = e.clientX - r.left;
+        smooth.y = mouse.y = e.clientY - r.top;
+      });
+      hero.addEventListener('mousemove', e => {
+        const r = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - r.left;
+        mouse.y = e.clientY - r.top;
+      });
+      hero.addEventListener('mouseleave', () => {
+        mouse.x = mouse.y = -9999;
+      });
+
+      // Click ripple
+      hero.addEventListener('click', e => {
+        const r = canvas.getBoundingClientRect();
+        ripples.push({ x: e.clientX - r.left, y: e.clientY - r.top, t: 0 });
+      });
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+
+      function getVertex(bx, by) {
+        const w = canvas.width, h = canvas.height;
+
+        // Idle breathing wave
+        const idle = Math.sin(bx / w * Math.PI * 2.5 + time)
+          * Math.cos(by / h * Math.PI * 1.5 + time * 0.65) * 10;
+
+        // Mouse bulge
+        const dx = bx - smooth.x, dy = by - smooth.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const lift = Math.max(0, 1 - dist / INFLUENCE);
+        const mouseZ = lift * lift * MAX_LIFT;
+
+        // Click ripples
+        let rippleZ = 0;
+        for (const rp of ripples) {
+          const rdx = bx - rp.x, rdy = by - rp.y;
+          const rd = Math.sqrt(rdx * rdx + rdy * rdy);
+          const wave = Math.sin(rd * 0.045 - rp.t * 9) * Math.exp(-rp.t * 1.8) * 28;
+          const decay = Math.max(0, 1 - rd / 420);
+          rippleZ += wave * decay;
+        }
+
+        const z = idle + mouseZ + rippleZ;
+        const cx = w / 2, cy = h / 2;
+        const sc = PERSP / (PERSP - z);
+
+        return {
+          x: cx + (bx - cx) * sc,
+          y: cy + (by - cy) * sc,
+          lift, z
+        };
+      }
+
+      function draw() {
+        time += 0.006;
+        ripples.forEach(rp => rp.t += 0.018);
+        ripples = ripples.filter(rp => rp.t < 3.2);
+
+        // Smooth mouse follow
+        const active = mouse.x > 0 && mouse.x < canvas.width;
+        smooth.x = lerp(smooth.x, active ? mouse.x : -9999, active ? 0.1 : 0.04);
+        smooth.y = lerp(smooth.y, active ? mouse.y : -9999, active ? 0.1 : 0.04);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const cw = canvas.width / COLS;
+        const ch = canvas.height / ROWS;
+
+        // Pre-compute vertices
+        const V = Array.from({ length: ROWS + 1 }, (_, r) =>
+          Array.from({ length: COLS + 1 }, (_, c) =>
+            getVertex(c * cw, r * ch)
+          )
+        );
+
+        // ── Grid lines (segment-by-segment so each glows independently) ──
+        // Horizontal
+        for (let r = 0; r <= ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            const a = V[r][c], b = V[r][c + 1];
+            const lft = Math.max(a.lift, b.lift);
+            const col = lft > 0.52 ? '247,92,110' : '181,227,39';
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(${col},${0.07 + lft * 0.25})`;
+            ctx.lineWidth = 1 + lft * 0.9;
+            ctx.stroke();
+          }
+        }
+        // Vertical
+        for (let c = 0; c <= COLS; c++) {
+          for (let r = 0; r < ROWS; r++) {
+            const a = V[r][c], b = V[r + 1][c];
+            const lft = Math.max(a.lift, b.lift);
+            const col = lft > 0.52 ? '247,92,110' : '181,227,39';
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(${col},${0.07 + lft * 0.25})`;
+            ctx.lineWidth = 1 + lft * 0.9;
+            ctx.stroke();
+          }
+        }
+
+        // ── Intersection nodes — diamond shape, glowing ──
+        for (let r = 0; r <= ROWS; r++) {
+          for (let c = 0; c <= COLS; c++) {
+            const v = V[r][c];
+            if (v.lift < 0.06) continue;
+
+            const col = v.lift > 0.52 ? '247,92,110' : '181,227,39';
+            const size = 1.5 + v.lift * 5.5;
+
+            // Soft glow
+            const grd = ctx.createRadialGradient(v.x, v.y, 0, v.x, v.y, size * 7);
+            grd.addColorStop(0, `rgba(${col},${v.lift * 0.28})`);
+            grd.addColorStop(1, `rgba(${col},0)`);
+            ctx.beginPath();
+            ctx.arc(v.x, v.y, size * 7, 0, Math.PI * 2);
+            ctx.fillStyle = grd;
+            ctx.fill();
+
+            // Rotated diamond node (spins slightly near cursor)
+            const spin = v.lift > 0.3 ? time * (v.lift > 0.6 ? 2 : 0.8) : Math.PI / 4;
+            ctx.save();
+            ctx.translate(v.x, v.y);
+            ctx.rotate(Math.PI / 4 + spin);
+            ctx.fillStyle = `rgba(${col},${v.lift})`;
+            ctx.fillRect(-size / 2, -size / 2, size, size);
+            ctx.restore();
+          }
+        }
+
+        // ── Floating diamond indicator at cursor ──
+        const sx = smooth.x, sy = smooth.y;
+        if (sx > 0 && sx < canvas.width && sy > 0) {
+          const float = -26 + Math.sin(time * 3.5) * 5;
+          const ds = 11;
+
+          // Dashed thread connecting cursor to diamond
+          ctx.beginPath();
+          ctx.setLineDash([3, 5]);
+          ctx.moveTo(sx, sy);
+          ctx.lineTo(sx, sy + float + ds * 0.7);
+          ctx.strokeStyle = 'rgba(181,227,39,0.2)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Diamond
+          ctx.save();
+          ctx.translate(sx, sy + float);
+          ctx.rotate(Math.PI / 4);
+          ctx.strokeStyle = 'rgba(181,227,39,0.85)';
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(-ds / 2, -ds / 2, ds, ds);
+          // Inner fill pulse
+          ctx.fillStyle = `rgba(181,227,39,${0.1 + Math.sin(time * 4) * 0.08})`;
+          ctx.fillRect(-ds / 2, -ds / 2, ds, ds);
+          ctx.restore();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+
+    // ─── MOBILE MENU ───
+    (function () {
+      const btn  = document.getElementById('nav-hamburger');
+      const menu = document.getElementById('mobile-menu');
+
+      function toggleMenu(open) {
+        btn.classList.toggle('open', open);
+        menu.classList.toggle('open', open);
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+
+      btn.addEventListener('click', () => toggleMenu(!btn.classList.contains('open')));
+
+      // Close on any link click
+      menu.querySelectorAll('.mobile-link').forEach(a =>
+        a.addEventListener('click', () => toggleMenu(false))
+      );
+
+      // Close on Escape
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') toggleMenu(false);
+      });
+    })();
+
+    // ─── CURSOR ───
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    // ─── COUNTDOWN ───
+    function showLive(instant) {
+      const countdown = document.getElementById('countdown');
+      const live = document.getElementById('cd-live');
+
+      if (instant) {
+        countdown.style.display = 'none';
+        live.classList.add('visible');
+        requestAnimationFrame(() => live.classList.add('animate'));
+      } else {
+        countdown.style.transition = 'opacity .5s ease';
+        countdown.style.opacity = '0';
+        setTimeout(() => {
+          countdown.style.display = 'none';
+          live.classList.add('visible');
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => live.classList.add('animate'))
+          );
+        }, 500);
+      }
+    }
+
+    function updateCountdown() {
+      const target = new Date('2026-03-23T09:00:00').getTime();
+      const now = Date.now();
+      const diff = Math.max(0, target - now);
+
+      if (diff === 0) {
+        showLive(false);
+        clearInterval(cdInterval);
+        return;
+      }
+
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+      document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+      document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+    }
+
+    // If already past event date on page load, skip straight to live state
+    if (Date.now() >= new Date('2026-03-23T09:00:00').getTime()) {
+      showLive(true);
+    } else {
+      updateCountdown();
+      const cdInterval = setInterval(updateCountdown, 1000);
+    }
+
+    // ─── EVENT FILTER ───
+    function filterEvents(cat, btn) {
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.event-card').forEach(card => {
+        const show = cat === 'all' || card.dataset.cat === cat;
+        card.style.display = show ? '' : 'none';
+      });
+    }
+
+    // ─── SCHEDULE DAY SWITCH ───
+    function switchDay(day, btn) {
+      document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.schedule-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('day' + day).classList.add('active');
+    }
+
+    // ─── PAGE LOADER ───
+    (function () {
+      const loader = document.getElementById('page-loader');
+
+      const dismiss = () => {
+        const heroLogoImg = document.querySelector('.hero-logo-wrap img');
+        const loaderWrap = loader.querySelector('.loader-logo-wrap');
+        const loaderImg = loaderWrap.querySelector('img');
+
+        // Keep hero logo hidden — it reveals as loader logo lands on it
+        heroLogoImg.style.opacity = '0';
+        heroLogoImg.style.transition = 'opacity 0.25s ease';
+
+        requestAnimationFrame(() => {
+          const heroRect = heroLogoImg.getBoundingClientRect();
+          const wrapRect = loaderWrap.getBoundingClientRect();
+
+          // Scale to match hero logo size, translate to its position
+          const scale = heroRect.height / wrapRect.height;
+          const tx = (heroRect.left + heroRect.width / 2) - (wrapRect.left + wrapRect.width / 2);
+          const ty = (heroRect.top + heroRect.height / 2) - (wrapRect.top + wrapRect.height / 2);
+
+          // ① Freeze glitch cleanly
+          loaderImg.style.animation = 'none';
+          loaderImg.style.filter = 'none';
+          loaderWrap.classList.add('flying');
+
+          // ② Fade out all loader UI elements
+          loader.querySelectorAll(
+            '.loader-grid, .loader-blob, .loader-blob-2, .loader-scanline, .loader-bar-wrap, .loader-label'
+          ).forEach(el => {
+            el.style.transition = 'opacity 0.22s ease';
+            el.style.opacity = '0';
+          });
+
+          // ③ Dissolve the dark backdrop to reveal the page underneath
+          loader.style.transition = 'background-color 0.5s ease';
+          loader.style.backgroundColor = 'rgba(19,16,26,0)';
+          loader.style.pointerEvents = 'none';
+
+          // ④ Launch the fly toward the hero logo
+          setTimeout(() => {
+            loaderWrap.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease 0.44s';
+            loaderWrap.style.transformOrigin = 'center center';
+            loaderWrap.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+            loaderWrap.style.opacity = '0'; // dissolves as it lands
+
+            // ⑤ Reveal hero logo exactly as loader logo arrives
+            setTimeout(() => {
+              heroLogoImg.style.opacity = '1';
+              setTimeout(() => loader.remove(), 150);
+            }, 520);
+          }, 200);
+        });
+      };
+
+      if (document.readyState === 'complete') {
+        setTimeout(dismiss, 2300);
+      } else {
+        window.addEventListener('load', () => setTimeout(dismiss, 2300));
+      }
+    })();
+
+    // ─── SCROLL REVEAL ───
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ─── VIDEO MODAL ───
+    (function () {
+      const modal   = document.getElementById('video-modal');
+      const wrap    = document.getElementById('vm-wrap');
+      const btnPlay = document.getElementById('play-teaser');
+
+      function openModal() {
+        const videoId = btnPlay.dataset.videoId;
+        const ytUrl   = `https://www.youtube.com/watch?v=${videoId}`;
+
+        wrap.innerHTML = `
+          <button class="vm-close" id="vm-close-inner" aria-label="Close">&#x2715;</button>
+          <div class="vm-card">
+            <img
+              src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg"
+              class="vm-thumb"
+              alt="INYAN 2026 Teaser"
+              onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'"
+            >
+            <div class="vm-overlay-inner">
+              <div class="vm-title">INYAN 2026 — Official Teaser</div>
+              <a href="${ytUrl}" target="_blank" rel="noopener" class="vm-watch-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
+                Watch on YouTube
+              </a>
+              <div class="vm-watch-note">Opens in a new tab</div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('vm-close-inner').addEventListener('click', closeModal);
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+        setTimeout(() => { wrap.innerHTML = ''; }, 380);
+      }
+
+      btnPlay.addEventListener('click', openModal);
+
+      modal.addEventListener('click', e => {
+        if (e.target === modal) closeModal();
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+    })();
+  </script>
+</body>
+
+</html>
